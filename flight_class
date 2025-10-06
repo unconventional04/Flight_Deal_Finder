@@ -1,0 +1,46 @@
+API_KEY="22ce5c54344854027f64c30833a504f0030c062cce07127dfed3fb5aada6ec3b"
+import requests
+import random
+from datetime import datetime, timedelta
+URL=f"https://serpapi.com/search"
+
+class Flight:
+    def __init__(self, home_city, departure_city):
+        self.home_city=home_city
+        self.departure_city=departure_city
+        self.date=None
+        self.price=0
+        self.url=None
+        self.api_key=API_KEY
+        self.random_date_within_6_months()
+
+    def random_date_within_6_months(self):
+        today = datetime.today()
+        six_months = today + timedelta(days=180)
+        delta = six_months - today
+        random_days = random.randrange(delta.days)
+        self.date= (today + timedelta(days=random_days)).strftime("%Y-%m-%d")
+
+    def flight_offers(self):
+        parameters = {
+            "engine": "google_flights",
+            "departure_id": self.home_city,
+            "arrival_id": self.departure_city,
+            "outbound_date": self.date,
+            "currency": "USD",
+            "adults": 1,
+            "api_key": self.api_key,
+            "type": 2,
+        }
+        response = requests.get(url=URL, params=parameters)
+        response.raise_for_status()
+        print(response.json())
+        best_flight = response.json().get('best_flights')
+        search_result=response.json().get("search_metadata")
+        flights_url=search_result["google_flights_url"]
+        try:
+            self.price= best_flight[0].get("price")
+        except:
+            print("There are no flights available")
+        self.url= flights_url
+
