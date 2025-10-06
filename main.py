@@ -1,5 +1,7 @@
 from flight_class import Flight
 import smtplib
+import os
+email_password=os.environ.get
 MY_EMAIL="oyeludeferanmi@gmail.com"
 
 url_for_iata="https://en.wikipedia.org/wiki/List_of_airports_by_IATA_airport_code:_A"
