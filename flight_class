@@ -1,7 +1,7 @@
 import requests
 import random
 import os
-API_KEY=os.environ(API_KEY)
+API_KEY=os.environ["API_KEY"]
 from datetime import datetime, timedelta
 URL=f"https://serpapi.com/search"
 
@@ -12,7 +12,7 @@ class Flight:
         self.date=None
         self.price=0
         self.url=None
-        self.api_key=f"{API_KEY}"
+        self.api_key=API_KEY
         self.random_date_within_6_months()
 
     def random_date_within_6_months(self):
